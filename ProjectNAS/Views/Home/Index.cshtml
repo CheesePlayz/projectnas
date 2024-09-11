@@ -1,0 +1,10 @@
+﻿@using ProjectNAS.Components
+@inject ProjectNAS.Services.FileService FileService
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<component type="typeof(GridFiles)"
+           render-mode="ServerPrerendered"
+           param-listFileModels="FileService.GetFiles()"
+           param-dirs="FileService.GetDirectories()" />

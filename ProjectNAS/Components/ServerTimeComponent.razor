@@ -1,0 +1,29 @@
+﻿@inject IConfiguration Configuration
+@code {
+@using System.Net
+    private IPAddress[]? ips;
+    private string? url;
+    protected override void OnInitialized()
+    {
+        ips = Dns.GetHostAddresses(Dns.GetHostName());
+        url = Configuration["Kestrel:Endpoints:MyHttpEndpoint:Url"];
+    }
+}
+
+
+<h3>Call to the Server Time</h3>
+<p>@DateTime.Now</p>
+
+<h3>Server IP Address & Port</h3>
+<p>@url</p>
+
+<h3>Server Local Adresses: IPV4 / IPV6</h3>
+@{
+    foreach (var ip in ips)
+    {
+        <p>@ip.MapToIPv4().ToString(); / @ip.MapToIPv6().ToString();</p>
+        
+    }
+}
+
+

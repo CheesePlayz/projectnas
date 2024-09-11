@@ -1,0 +1,43 @@
+﻿@using Models
+@inject NavigationManager Navigation
+@code {
+    [Parameter]
+    public FileModel? fileModel { get; set; }
+
+    string? imageSource;
+
+    protected override void OnInitialized()
+    {
+        switch (fileModel?.ContentType.ToLower())
+        {
+            case ".pdf":
+                imageSource = "pdf.png";
+                break;
+            case ".docx":
+                imageSource = "docx.png";
+                break;
+            case ".jpeg":
+            case ".png":
+                imageSource = "picture.png";
+                break;
+            case ".zip":
+                imageSource = "zip.png";
+                break;
+            default:
+                imageSource = "unknown.png";
+                break;
+        }
+    }
+}
+
+
+<div>
+    <img src=@imageSource alt="File Icon" />
+    <p>@fileModel?.FileName, @fileModel?.Size, @fileModel?.ContentType</p>
+
+
+        <a href="/File/Download?fileName=@fileModel?.FileName" alt="download">
+            <img style="width: 48px; height: 48px; border: 2px;" src="download.png" alt="Download" />
+        </a>
+</div>
+

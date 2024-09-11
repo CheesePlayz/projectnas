@@ -1,0 +1,9 @@
+﻿@using Models
+@code {
+    [Parameter]
+    public string? directory { get; set; }
+
+    public string? imageSource = "folder.png";
+}
+<img src=@imageSource alt="" />
+<p>@Path.GetFileName(directory)</p>

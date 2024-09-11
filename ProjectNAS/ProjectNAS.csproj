@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="testUploads\**" />
+    <Content Remove="testUploads\**" />
+    <EmbeddedResource Remove="testUploads\**" />
+    <None Remove="testUploads\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Uploads\TestFolder2\" />
+    <Folder Include="Uploads\TestFolder1\" />
+  </ItemGroup>
+
+</Project>
