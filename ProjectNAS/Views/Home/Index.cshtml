@@ -4,7 +4,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<component type="typeof(GridFiles)"
+<component type="typeof(GridFilesComponent)"
            render-mode="ServerPrerendered"
            param-listFileModels="FileService.GetFiles()"
            param-dirs="FileService.GetDirectories()" />

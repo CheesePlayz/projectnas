@@ -1,0 +1,17 @@
+﻿@page "/test"
+
+<h3>Test Component</h3>
+
+<input type="text" @bind="testValue" />
+<button @onclick="TestClick">Test Button</button>
+
+<p>Value: @testValue</p>
+
+@code {
+    private string testValue = "";
+
+    private void TestClick()
+    {
+        Console.WriteLine($"Button clicked. Value: {testValue}");
+    }
+}

@@ -46,6 +46,12 @@ namespace ProjectNAS.Services
             return null;
         }
 
+        public List<FileModel> GetFilesBySearch(string search)
+        {
+            return UploadedFiles.FindAll(x => x.FileName.Contains(search, StringComparison.OrdinalIgnoreCase));
+        }
+
+
         public string[] GetDirectories()
         {
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");

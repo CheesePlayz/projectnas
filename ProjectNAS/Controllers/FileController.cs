@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectNAS.Models;
 using ProjectNAS.Services;
+using System.IO.Compression;
 using System.Runtime.CompilerServices;
 
 namespace ProjectNAS.Controllers
@@ -63,6 +64,40 @@ namespace ProjectNAS.Controllers
             memory.Position = 0;
 
             return File(memory, "application/octet-stream", fileName);
+        }
+
+        public async Task<IActionResult> ZipDownload(string fileName)
+        {
+            var filePath = Path.Combine(uploadPath, fileName);
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound("File not found.");
+            }
+
+            string zipFilePath = Path.ChangeExtension(filePath, ".zip");
+            try
+            {
+                using (ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create))
+                {
+                    archive.CreateEntryFromFile(filePath, Path.GetFileName(filePath));
+                }
+
+                var memory = new MemoryStream();
+
+                using (var stream = new FileStream(zipFilePath, FileMode.Open, FileAccess.Read))
+                {
+                    await stream.CopyToAsync(memory);
+                }
+                memory.Position = 0;
+                return File(memory, "application/octet-stream", Path.GetFileName(zipFilePath));
+            }
+            finally
+            {
+                if (System.IO.File.Exists(zipFilePath))
+                {
+                    System.IO.File.Delete(zipFilePath);
+                }
+            }
         }
     }
 }

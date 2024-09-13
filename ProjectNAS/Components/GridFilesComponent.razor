@@ -1,0 +1,105 @@
+﻿
+@page "/files"
+@using ProjectNAS.Models
+@using ProjectNAS.Components
+@inject ProjectNAS.Services.FileService FileService
+
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+        gap: 10px;
+        background-color: #FFFFFF;
+        padding: 10px;
+    }
+
+    .grid-item {
+        background-color: rgba(240, 240, 240, 0.8);
+        border: 1px solid rgba(230, 230, 230, 1);
+        padding: 20px;
+        font-size: 20px;
+        text-align: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        box-sizing: border-box;
+    }
+
+    .grid-item:hover {
+        background-color: #b5e2ff;
+    }
+
+    img {
+        object-fit: fill;
+        width: 100%;
+        max-width: 128px;
+        max-height: 128px;
+        height: auto;
+        box-sizing: border-box;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public List<FileModel>? listFileModels { get; set; }
+
+    [Parameter]
+    public string[]? dirs { get; set; }
+
+    string search = "";
+
+    protected override void OnInitialized()
+    {
+        if (listFileModels == null)
+        {
+            listFileModels = FileService.GetFiles();
+            Console.WriteLine(listFileModels.Count);
+        }
+    }
+
+    private void ShowSearchFiles()
+    {
+        Console.WriteLine($"Search term: {search}");
+        listFileModels = FileService.GetFilesBySearch(search);
+    }
+}
+
+<h3>Files in Uploads folder</h3>
+
+<h4>Subdirectories</h4>
+<div class="grid-container">
+    @if (dirs != null && dirs.Any())
+    {
+        foreach (var dir in dirs)
+        {
+            <div class="grid-item">
+                <FolderComponent directory="@dir" />
+            </div>
+        }
+    }
+    else
+    {
+        <p>No subfolders.</p>
+    }
+</div>
+
+<h4>Files</h4>
+<label for="site-search">Search the files:</label>
+<input type="search" id="searchFiles" @bind="search" @oninput="ShowSearchFiles" placeholder="Enter file name..." />
+<button @onclick="() => Console.WriteLine('Button clicked')">Test Button</button>
+
+
+<div class="grid-container">
+    @if (listFileModels != null && listFileModels.Any())
+    {
+        @foreach (var file in listFileModels)
+        {
+            <div class="grid-item">
+                <FileShowcaseComponent fileModel="file" />
+            </div>
+        }
+    }
+    else
+    {
+        <p>No files found matching your search.</p>
+    }
+</div>

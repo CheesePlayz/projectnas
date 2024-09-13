@@ -35,9 +35,15 @@
     <img src=@imageSource alt="File Icon" />
     <p>@fileModel?.FileName, @fileModel?.Size, @fileModel?.ContentType</p>
 
-
-        <a href="/File/Download?fileName=@fileModel?.FileName" alt="download">
-            <img style="width: 48px; height: 48px; border: 2px;" src="download.png" alt="Download" />
+    <a href="/File/Download?fileName=@fileModel?.FileName" alt="download">
+        <img style="width: 32px; height: 32px; border: 2px;" src="download.png" alt="Download" />
+    </a>
+    @if (fileModel?.ContentType.ToLower() != ".zip")
+    {
+        <a href="/File/ZipDownload?fileName=@fileModel?.FileName" alt="download">
+            <img style="width: 32px; height: 32px; border: 2px;" src="zipdownload.png" alt="Download" />
         </a>
+    }
+
 </div>
 
